@@ -4,7 +4,7 @@ from PIL import Image
 import numpy as np
 
 # Load your YOLOv8m model (ensure the path to your model is correct)
-model = YOLO('best.pt')  # Replace with your actual model file name
+model = YOLO('YOLOV8m.pt')  # Replace with your actual model file name
 
 # Streamlit app title
 st.title("ECG Signal Classification")
