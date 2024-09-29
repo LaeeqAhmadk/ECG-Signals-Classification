@@ -19,8 +19,9 @@ if uploaded_file is not None:
     # Perform inference
     results = model(image)
 
-     # Assuming your model has 2 classes: 0 for "Normal", 1 for "Abnormal"
-    class_names = ["Normal", "Abnormal"]
+      # YOLOv8 might return a list of predictions, extract the first prediction
+    if results and len(results) > 0:
+        result = results[0]  # Get the first result from the list
 
     # Extracting the class and confidence score from the results
     predicted_class = int(results.pred[0][:, 5].cpu().numpy()[0])  # Get the class prediction (0 or 1)
