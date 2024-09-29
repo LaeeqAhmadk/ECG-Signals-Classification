@@ -1,5 +1,5 @@
-streamlit==1.25.0  # Make sure this version is compatible with your app
-ultralytics==8.0.120  # Specify a stable YOLOv8 version
-Pillow==10.0.1  # For image processing
-torch==2.0.1  # Ensure that YOLOv8 requires PyTorch
-opencv-python-headless==4.8.0.74  # YOLOv8 might need OpenCV for image processing
+streamlit
+ultralytics
+Pillow
+torch
+opencv-python-headless
