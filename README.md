@@ -26,10 +26,10 @@ To provide healthcare professionals with an easy-to-use, fast, and accurate tool
 
 -  Source: **Roboflow ECG Classification Dataset**
 - Classes:
-- ECG HB (Heart Block)
-- History_MI (History of Myocardial Infarction)
-- MI-ECG (Myocardial Infarction)
-- Normal-ECG
+    - ECG HB (Heart Block)
+    - History_MI (History of Myocardial Infarction)
+    - MI-ECG (Myocardial Infarction)
+    - Normal-ECG
 - The model simplifies these classes into:
 - Normal (for "Normal-ECG")
 - Abnormal (for all other classes)
