@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 model = YOLO('YOLOV8m.pt') 
 
 # Streamlit app title
-st.title("ECG Signal Classification: Normal vs Abnormal")
+st.title("ECG Signal Classification:")
 
 # Upload an image (assumes your ECG signals are visualized as images)
 uploaded_file = st.file_uploader("Upload an ECG signal image", type=["jpg", "jpeg", "png"])
