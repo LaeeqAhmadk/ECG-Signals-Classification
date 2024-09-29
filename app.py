@@ -2,12 +2,13 @@ import streamlit as st
 from ultralytics import YOLO
 from PIL import Image
 import numpy as np
+import matplotlib.pyplot as plt
 
 # Load your YOLOv8m model (ensure the path to your model is correct)
-model = YOLO('YOLOV8m.pt')  # Replace with your actual model file name
+model = YOLO('YOLOV8m')  # Replace with your actual model file name
 
 # Streamlit app title
-st.title("ECG Signal Classification")
+st.title("ECG Signal Classification: Normal vs Abnormal")
 
 # Upload an image (assumes your ECG signals are visualized as images)
 uploaded_file = st.file_uploader("Upload an ECG signal image", type=["jpg", "jpeg", "png"])
@@ -17,22 +18,42 @@ if uploaded_file is not None:
     st.image(image, caption="Uploaded ECG Signal", use_column_width=True)
 
     # Perform inference
-    results = model(image)
+    results = model(image)  # Make sure the image is compatible with the model (resize if needed)
 
-      # YOLOv8 might return a list of predictions, extract the first prediction
+    # Assuming the model provides results with bounding boxes and classes
     if results and len(results) > 0:
         result = results[0]  # Get the first result from the list
 
-    # Extracting the class and confidence score from the results
-    predicted_class = int(results.pred[0][:, 5].cpu().numpy()[0])  # Get the class prediction (0 or 1)
-    confidence_score = results.pred[0][:, 4].cpu().numpy()[0]      # Get the confidence score for the prediction
+        # Extract information from the result
+        boxes = result.boxes.xyxy.cpu().numpy()  # Bounding box coordinates
+        class_ids = result.boxes.cls.cpu().numpy()  # Class IDs (0: Normal, 1: Abnormal)
+        confidences = result.boxes.conf.cpu().numpy()  # Confidence scores
 
+        # Assuming your model has 2 classes defined in the data.yaml file
+        class_names = ["Normal", "Abnormal"]
 
-    # Display results
-    st.write("Classifications: ", results.names)
-    st.write("Confidences: ", [f"{score:.2f}" for score in results.pred[0][:, 4].cpu().numpy()])
+        # Display results for each detected ECG classification
+        for i, box in enumerate(boxes):
+            predicted_class = int(class_ids[i])
+            confidence_score = confidences[i]
 
-    # Display the processed image with bounding boxes (if relevant)
-    results.show()  # This will display the bounding boxes on the image if any
+            # Draw the bounding box and label
+            st.write(f"Prediction: **{class_names[predicted_class]}**")
+            st.write(f"Confidence Score: **{confidence_score:.2f}**")
+
+            # Optionally draw bounding boxes on the image using Matplotlib
+            fig, ax = plt.subplots()
+            ax.imshow(image)
+            # Draw bounding box (x1, y1, x2, y2)
+            rect = plt.Rectangle(
+                (box[0], box[1]), box[2] - box[0], box[3] - box[1],
+                linewidth=2, edgecolor='r', facecolor='none'
+            )
+            ax.add_patch(rect)
+            ax.text(box[0], box[1] - 10, f"{class_names[predicted_class]}: {confidence_score:.2f}",
+                    color='white', fontsize=12, backgroundcolor='r')
+            st.pyplot(fig)
+    else:
+        st.write("No valid predictions found.")
 else:
     st.write("Please upload an ECG image for classification.")
