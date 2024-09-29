@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Load your YOLOv8m model (ensure the path to your model is correct)
-model = YOLO('YOLOV8m.pt')  # Replace with your actual model file name
+model = YOLO('YOLOV8m') 
 
 # Streamlit app title
 st.title("ECG Signal Classification: Normal vs Abnormal")
@@ -26,19 +26,25 @@ if uploaded_file is not None:
 
         # Extract information from the result
         boxes = result.boxes.xyxy.cpu().numpy()  # Bounding box coordinates
-        class_ids = result.boxes.cls.cpu().numpy()  # Class IDs (0: Normal, 1: Abnormal)
+        class_ids = result.boxes.cls.cpu().numpy()  # Class IDs (0: ECG HB, 1: History_MI, 2: MI-ECG, 3: Normal-ECG)
         confidences = result.boxes.conf.cpu().numpy()  # Confidence scores
 
-        # Assuming your model has 2 classes defined in the data.yaml file
-        class_names = ["Abnormal", "Normal"]
+        # Class names from your data.yaml file
+        class_names = ['ECG HB', 'History_MI', 'MI-ECG', 'Normal-ECG']
 
         # Display results for each detected ECG classification
         for i, box in enumerate(boxes):
             predicted_class = int(class_ids[i])
             confidence_score = confidences[i]
 
-            # Draw the bounding box and label
-            st.write(f"Prediction: **{class_names[predicted_class]}**")
+            # Check if the predicted class is "Normal-ECG"
+            if class_names[predicted_class] == "Normal-ECG":
+                classification = "Normal"
+            else:
+                classification = "Abnormal"
+
+            # Display the classification and confidence score
+            st.write(f"Prediction: **{classification}**")
             st.write(f"Confidence Score: **{confidence_score:.2f}**")
 
             # Optionally draw bounding boxes on the image using Matplotlib
@@ -50,7 +56,7 @@ if uploaded_file is not None:
                 linewidth=2, edgecolor='r', facecolor='none'
             )
             ax.add_patch(rect)
-            ax.text(box[0], box[1] - 10, f"{class_names[predicted_class]}: {confidence_score:.2f}",
+            ax.text(box[0], box[1] - 10, f"{classification}: {confidence_score:.2f}",
                     color='white', fontsize=12, backgroundcolor='r')
             st.pyplot(fig)
     else:
