@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # Load your YOLOv8m model (ensure the path to your model is correct)
-model = YOLO('YOLOV8m')  # Replace with your actual model file name
+model = YOLO('YOLOV8m.pt')  # Replace with your actual model file name
 
 # Streamlit app title
 st.title("ECG Signal Classification: Normal vs Abnormal")
