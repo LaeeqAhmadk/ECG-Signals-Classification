@@ -30,7 +30,7 @@ if uploaded_file is not None:
         confidences = result.boxes.conf.cpu().numpy()  # Confidence scores
 
         # Assuming your model has 2 classes defined in the data.yaml file
-        class_names = ["Normal", "Abnormal"]
+        class_names = ["Abnormal", "Normal"]
 
         # Display results for each detected ECG classification
         for i, box in enumerate(boxes):
