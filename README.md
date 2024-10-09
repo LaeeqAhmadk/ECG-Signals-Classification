@@ -38,7 +38,7 @@ Training: The model was trained on ECG images using bounding boxes to detect are
 
 ## Live Demo
 The project is deployed on Hugging Face Spaces using Streamlit. You can try it out live using the link below:
-https://huggingface.co/spaces/Laeeeq/ECG_Signals_Classification
+https://laeeeq-ecg-signals-classification.hf.space
 
 ## Results
 The model achieves accurate classification with high confidence for both normal and abnormal ECG signals. It provides visual feedback through bounding boxes, making it easier to interpret the results.
